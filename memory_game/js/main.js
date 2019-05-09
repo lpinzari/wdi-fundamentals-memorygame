@@ -1,4 +1,6 @@
 
+var gameOver = false;
+
 var cards = [
     {
         rank: "queen",
@@ -32,20 +34,45 @@ function checkForMatch(){
             alert('You found a match!');
         } else {
             alert('Sorry, try again.');
+            setTimeout(restartGame,1000);
         }
     }
 
 }
 
+// reload the page
+function restartGame(){
 
-function flipCard(cardId){
-
-    console.log("User flipped " + cards[cardId].rank);
-    console.log(cards[cardId].cardImage);
-    console.log(cards[cardId].suit);
-    cardsInPlay.push(cards[cardId].rank);
-    checkForMatch();
+    location.reload();
 }
 
-flipCard(0);
-flipCard(2);
+
+
+
+function flipCard(){
+
+    var cardId = this.getAttribute('data-id');
+    //console.log("User flipped " + cards[cardId].rank);
+
+    this.src = cards[cardId].cardImage;
+    //console.log(cards[cardId].cardImage);
+
+    //console.log(cards[cardId].suit);
+    cardsInPlay.push(cards[cardId].rank);
+    checkForMatch();
+
+}
+
+function createBoard(){
+
+    for(var i=0; i<cards.length; i++){
+
+        var cardElement = document.createElement('img');
+        cardElement.setAttribute('src',"images/back.png");
+        cardElement.setAttribute('data-id',i);
+        cardElement.addEventListener('click',flipCard);
+        document.getElementById('game-board').appendChild(cardElement);
+    }
+}
+
+createBoard();
